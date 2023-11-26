@@ -1,20 +1,6 @@
 mod game_components;
 use crate::game_components::game::game_builder;
 
-/**
- * TO DO:
- * * use maps and filters
- * * Put structs and impls in their own files
- *   (door.rs & game.rs)
- * 
- * * RUST IMPORTS:
- * * I must make hierarchical trees.
- * * Doors should be inside the Game folder.
- * 
- * "Rust lets you split a package into multiple crates and a crate into modules
- * so you can refer to items defined in one module from another module."
- */
-
  /**
   * In the classic Monty Hall problem:
   * -- you hide a prize behind one of three doors.
