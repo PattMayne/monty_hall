@@ -1,50 +1,61 @@
-use std::io;
-use rand::Rng;
-use std::cmp::Ordering;
+mod game_components;
+use crate::game_components::game::game_builder;
 
-struct Door {
-    winner: bool,
-    open: bool
-}
+/**
+ * TO DO:
+ * * use maps and filters
+ * * Put structs and impls in their own files
+ *   (door.rs & game.rs)
+ * 
+ * * RUST IMPORTS:
+ * * I must make hierarchical trees.
+ * * Doors should be inside the Game folder.
+ * 
+ * "Rust lets you split a package into multiple crates and a crate into modules
+ * so you can refer to items defined in one module from another module."
+ */
 
-struct Game {
-    door_a: Door,
-    door_b: Door,
-    door_c: Door,
-}
+ /**
+  * In the classic Monty Hall problem:
+  * -- you hide a prize behind one of three doors.
+  * -- ask the player to pick one door.
+  * -- At least one of the other two must be empty.
+  * -- randomly open one of the duds
+  * -- Ask player if they want to switch their selection for the other unopened door.
+  * -- Show final results
+  */
 
-
+ /**
+ * When the main() function finishes running,
+ * the player has already won or lost.
+ * 
+ * Two loops are used around the user inputs
+ * to make sure we get a good response.
+ */
 fn main() {
-    
-    let game = start_game();
+    // Make a game and start it
+    let mut game = game_builder();
+    game.set_prize();
 
+    // Print the doors in their raw, unopened state
+    game.print_doors();
 
-    println!("Hello, world!");
-}
+    // Prompt the user to choose a door
+    game.prompt_user_to_select_door();
 
-fn start_game() {
-    // create the game and its doors
-    let game = &mut Game {
-        door_a: door_builder(),
-        door_b: door_builder(),
-        door_c: door_builder(),
-    };
+    println!(" ");
+    println!("You chose Door {}!", game.guess);
+    println!(" ");
 
-    //randomly make one a winner
-    set_winner(game);
+    // Show the user one non-selected, non-prize door
+    game.open_losing_door();
+    game.print_doors();
 
-}
+    // Does the user want to keep their selection, or switch?
+    game.prompt_user_to_switch_doors();
 
-
-fn door_builder() -> Door {
-    Door {
-        winner: false,
-        open: false
-    }
-}
-
-
-fn set_winner(game: &mut Game) {
-    let winner_id = rand::thread_rng().gen_range(1..=3);
-    println!("The number is {}", winner_id)
+    // Use has chosen. Show the result.
+    game.open_all_doors();
+    game.print_doors();
+    game.conclude();    
 }
